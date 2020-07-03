@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
+        .game {
+            width: 100%;
+            height: 100vh;
+            overflow-y:hidden;
+            
+            animation: start 2s forwards .5s ease-in-out;
+        }
+        @keyframes start{
+            0%{transform: translateY(-70%)}
+            25%{transform: translateY(20%);}
+            50%{transform: translateY(5%);}
+            75%{transform: translateY(10%);}
+            100%{transform: translateY(0%);}
+        }
+        .animate{color:red}
+        .row {
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            width: 300px;
+        }
+
+        .row div {
+            margin: 0;
+            padding: 0;
+        }
+
+        .item {
+            height: 80px;
+            width: 100px;
+            display: block;
+            font-size: 1rem;
+            font-family: 'Finger Paint', cursive;
+        }
+
+        .item:hover {
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .row div:nth-child(1) div {
+            border-right: 5px solid #333;
+            border-bottom: 5px solid #333;
+            
+        }
+
+        .row div:nth-child(3) div {
+            border-left: 5px solid #333;
+            border-bottom: 5px solid #333;
+        }
+
+        .row div:nth-child(2) div:nth-child(2) {
+            border-bottom: 5px solid #333;
+        }
+
+        .row div:nth-child(2) div:nth-child(1) {
+            border-bottom: 5px solid #333;
+        }
+
+        .row div:nth-child(1) div:nth-child(3) {
+            border-bottom: none;
+        }
+
+        .row div:nth-child(3) div:nth-child(3) {
+            border-bottom: none;
+        }
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            font-family: cursive;
+        }
+    </style>
+    <title>Tic Tac Toe!</title>
+</head>
+
+<body>
+    <section class="game">
+        <div class="title my-5">
+            <h1 class="text-center text-info">Tic <span class="text-dark">Tac</span> Toe</h1>
+            <h3 class="player text-center text-secondary"></h3>
+        </div>
+        <div class="row mt-5">
+            <div class="col-4">
+                <div class="item" id="r1"></div>
+                <div class="item" id="r2"></div>
+                <div class="item" id="r3"></div>
+            </div>
+            <div class="col-4">
+                <div class="item" id="r4"></div>
+                <div class="item" id="r5"></div>
+                <div class="item" id="r6"></div>
+            </div>
+            <div class="col-4">
+                <div class="item" id="r7"></div>
+                <div class="item" id="r8"></div>
+                <div class="item" id="r9"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script>
+        let currentPlayer = document.querySelector('.player')
+        playerTurn()
+        let sign = 'x'
+        let items = document.querySelectorAll('.item')
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+
+                let id = item.getAttribute('id')
+                play(id)
+                if(sign=='x'){
+                item.style.color="#0d47a1"
+                } else{
+                    item.style.color=" #ff4444"
+                }
+            })
+        })
+        
+        
+        function play(number) {
+
+            // console.log(number)
+            let item = document.getElementById(number)
+            if (item.textContent == '') {
+                
+                item.textContent = sign
+                winner()
+                checValues()
+            }
+        }
+        function checValues() {
+            if (sign == 'x') {
+                sign = 'o'
+                
+                if(currentPlayer.textContent == "Waheed's turn"){
+                currentPlayer.textContent = "Fahd's turn"
+                } else{
+                    currentPlayer.textContent = "Waheed's turn"
+                }
+                // console.log(sign)
+
+
+            } else {
+                sign = 'x'
+                // item.style.color="red"
+                // console.log(sign)
+                if(currentPlayer.textContent == "Fahd's turn"){
+                currentPlayer.textContent = "Waheed's turn"
+                } else{
+                    currentPlayer.textContent = "Fahd's turn"
+                }
+            }
+        }
+        function getBox(no) {
+            return document.getElementById("r" + no).innerHTML;
+        }
+        function checkMove(a, b, c, m) {
+            if (getBox(a) == m && getBox(b) == m && getBox(c) == m) return true;
+            else return false
+        }
+        function winner() {
+            if (checkMove(1, 2, 3, sign) || checkMove(4, 5, 6, sign) || checkMove(7, 8, 9, sign)
+                || checkMove(1, 4, 7, sign) || checkMove(2, 5, 8, sign) || checkMove(3, 6, 9, sign)
+                || checkMove(1, 5, 9, sign) || checkMove(3, 5, 7, sign)) {
+                    
+                if(sign==='x' && currentPlayer.textContent=="Fahd's turn" || 
+                sign==='o' && currentPlayer.textContent=="Fahd's turn"){
+                    currentPlayer.textContent="Fahd is the Winner"
+                    currentPlayer.classList.add('animate')
+                } else{
+                    currentPlayer.textContent="Waheed is the Winner"
+                }
+                // console.log(sign)
+               setTimeout(() => {
+                items.forEach(item => {
+                    item.textContent = ''
+                })
+               }, 3000);
+                throw "game end"
+            }
+            else {
+                let draw = []
+                items.forEach(item => {
+                    if (item.textContent !== '') {
+                        draw.push(item)
+                        console.log(draw.length)
+                    }
+                })
+                if (draw.length === 9) {
+                    console.log('draw')
+                    currentPlayer.textContent= "Game is Draw"
+                    setTimeout(() => {
+                        items.forEach(item => {
+                        item.textContent = ''                       
+                    })
+                    }, 3000);
+                    
+                    throw "game end"
+                }
+
+            }
+           
+        } 
+        function playerTurn(){
+            let random=Math.floor(Math.random()*25);
+            console.log(random)
+            if(random%2==0){
+                currentPlayer.textContent="Fahd's turn";
+                
+            } else{
+                currentPlayer.textContent="Waheed's turn"
+            }
+        }
+    </script>
+</body>
+
+</html>
